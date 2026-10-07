@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yousuf & Arwa — October 16, 2026</title>
+<meta name="theme-color" content="#160b18">
+<style>
+*{box-sizing:border-box} html,body{margin:0;min-height:100%;font-family:Georgia,"Times New Roman",serif}
+body{overflow-x:hidden;background:radial-gradient(circle at 50% 35%,#4b1f42 0,#1c0d20 42%,#09060d 100%);color:#fff}
+canvas{position:fixed;inset:0;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
+.card{width:min(850px,100%);text-align:center;padding:52px 24px 44px;border:1px solid rgba(255,255,255,.16);border-radius:32px;background:rgba(18,8,20,.48);backdrop-filter:blur(14px);box-shadow:0 30px 100px rgba(0,0,0,.45),inset 0 1px rgba(255,255,255,.12);animation:rise 1.5s ease both}
+.kicker{letter-spacing:.35em;text-transform:uppercase;font:600 11px Arial,sans-serif;opacity:.72}
+h1{font-size:clamp(50px,12vw,105px);line-height:.9;margin:22px 0 12px;font-weight:400}
+.amp{font-style:italic;font-size:.65em;opacity:.8}
+.date{font:500 14px Arial,sans-serif;letter-spacing:.22em;text-transform:uppercase;opacity:.82}
+.quote{font-size:clamp(23px,5vw,42px);font-style:italic;margin:38px auto 14px;max-width:720px}
+.sub{font:15px Arial,sans-serif;opacity:.65;letter-spacing:.08em}
+.divider{width:90px;height:1px;background:rgba(255,255,255,.35);margin:30px auto}
+.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:620px;margin:28px auto}
+.unit{padding:16px 8px;border-radius:18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09)}
+.num{font:600 clamp(25px,6vw,42px) Arial,sans-serif}.label{font:10px Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.55;margin-top:6px}
+button{margin-top:22px;border:1px solid rgba(255,255,255,.25);color:#fff;background:rgba(255,255,255,.08);padding:13px 21px;border-radius:999px;cursor:pointer;font:12px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;transition:.3s}
+button:hover{background:rgba(255,255,255,.16);transform:translateY(-2px)}
+.footer{margin-top:32px;font:11px Arial,sans-serif;opacity:.45;letter-spacing:.1em}
+.heart{position:fixed;z-index:1;bottom:-30px;animation:float linear forwards;opacity:0}
+@keyframes rise{from{opacity:0;transform:translateY(25px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes float{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.65}100%{transform:translateY(-115vh) rotate(25deg);opacity:0}}
+@media(max-width:520px){.card{padding:42px 16px 34px}.countdown{gap:6px}.unit{padding:13px 3px}.label{letter-spacing:.08em;font-size:8px}}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="wrap">
+  <main class="card">
+    <div class="kicker">A little beginning</div>
+    <h1>Yousuf <span class="amp">&amp;</span> Arwa</h1>
+    <div class="date">16 October 2026</div>
+    <div class="divider"></div>
+    <div class="quote">“We fell in love in October.”</div>
+    <div class="sub">And maybe this is where forever starts. ♡</div>
+
+    <div class="countdown" aria-label="Countdown">
+      <div class="unit"><div class="num" id="days">00</div><div class="label">Days</div></div>
+      <div class="unit"><div class="num" id="hours">00</div><div class="label">Hours</div></div>
+      <div class="unit"><div class="num" id="mins">00</div><div class="label">Minutes</div></div>
+      <div class="unit"><div class="num" id="secs">00</div><div class="label">Seconds</div></div>
+    </div>
+
+    <button id="music">♫ Play our little song</button>
+    <div class="footer">Y &nbsp;♡&nbsp; A</div>
+  </main>
+</div>
+
+<script>
+const target = new Date("2026-10-16T00:00:00+03:00").getTime();
+function pad(n){return String(n).padStart(2,"0")}
+function tick(){
+  const d=Math.max(0,target-Date.now());
+  document.getElementById("days").textContent=pad(Math.floor(d/86400000));
+  document.getElementById("hours").textContent=pad(Math.floor(d%86400000/3600000));
+  document.getElementById("mins").textContent=pad(Math.floor(d%3600000/60000));
+  document.getElementById("secs").textContent=pad(Math.floor(d%60000/1000));
+}
+tick();setInterval(tick,1000);
+
+// soft floating hearts
+const symbols=["♡","♥","✦","·"];
+function heart(){
+  const e=document.createElement("div");e.className="heart";
+  e.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+  e.style.left=(Math.random()*100)+"vw";
+  e.style.fontSize=(12+Math.random()*20)+"px";
+  e.style.animationDuration=(7+Math.random()*8)+"s";
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),16000);
+}
+setInterval(heart,650);
+
+// subtle starfield
+const c=document.getElementById("stars"),x=c.getContext("2d");let W,H,stars=[];
+function resize(){W=c.width=innerWidth*devicePixelRatio;H=c.height=innerHeight*devicePixelRatio;x.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);stars=Array.from({length:100},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.4+.2,a:Math.random()}))}
+addEventListener("resize",resize);resize();
+function draw(){
+ x.clearRect(0,0,innerWidth,innerHeight);
+ for(const s of stars){s.a+=.01;let a=.2+.35*(Math.sin(s.a)+1)/2;x.globalAlpha=a;x.beginPath();x.arc(s.x,s.y,s.r,0,Math.PI*2);x.fillStyle="#fff";x.fill()}
+ requestAnimationFrame(draw)
+} draw();
+
+// tiny generated ambient melody using Web Audio (no external audio file)
+let audio, gain, timer, playing=false, step=0;
+const notes=[261.63,329.63,392.00,329.63,293.66,349.23,440.00,349.23];
+function playNote(freq,when,dur=.65){
+ const o=audio.createOscillator(),g=audio.createGain();
+ o.type="sine";o.frequency.value=freq;g.gain.setValueAtTime(.0001,when);
+ g.gain.exponentialRampToValueAtTime(.045,when+.08);
+ g.gain.exponentialRampToValueAtTime(.0001,when+dur);
+ o.connect(g).connect(gain);o.start(when);o.stop(when+dur+.03);
+}
+function loop(){
+ if(!playing)return;
+ const now=audio.currentTime;
+ for(let i=0;i<8;i++)playNote(notes[(step+i)%notes.length],now+i*.55,.48);
+ step=(step+8)%notes.length; timer=setTimeout(loop,4000);
+}
+document.getElementById("music").onclick=async()=>{
+ if(!audio){audio=new (window.AudioContext||window.webkitAudioContext)();gain=audio.createGain();gain.gain.value=.7;gain.connect(audio.destination)}
+ if(audio.state==="suspended")await audio.resume();
+ playing=!playing;
+ document.getElementById("music").textContent=playing?"♫ Pause our little song":"♫ Play our little song";
+ if(playing)loop();else clearTimeout(timer);
+};
+</script>
+</body>
+</html>
